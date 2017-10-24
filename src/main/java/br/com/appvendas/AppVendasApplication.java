@@ -10,10 +10,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.appvendas.domain.Categoria;
 import br.com.appvendas.domain.Cidade;
+import br.com.appvendas.domain.Cliente;
+import br.com.appvendas.domain.Endereco;
 import br.com.appvendas.domain.Estado;
 import br.com.appvendas.domain.Produto;
+import br.com.appvendas.domain.enums.TipoCliente;
 import br.com.appvendas.repositories.CategoriaRepository;
 import br.com.appvendas.repositories.CidadeRepository;
+import br.com.appvendas.repositories.ClienteRepository;
+import br.com.appvendas.repositories.EnderecoRepository;
 import br.com.appvendas.repositories.EstadoRepository;
 import br.com.appvendas.repositories.ProdutoRepository;
 
@@ -32,6 +37,12 @@ public class AppVendasApplication implements CommandLineRunner {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(AppVendasApplication.class, args);
 	}
@@ -48,11 +59,20 @@ public class AppVendasApplication implements CommandLineRunner {
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
-		
+		Estado est3 = new Estado(null, "Bahia");
+
+				
 		Cidade c1 = new Cidade(null, "Uberlândia", est1);
 		Cidade c2 = new Cidade(null, "São Paulo", est2);
 		Cidade c3 = new Cidade(null, "Campinas", est2);
+		Cidade c4 = new Cidade(null, "Salvador", est3);
 		
+
+		Cliente cli1 = new Cliente(null, "Jessica Santos", "nynaalmeida@icloud.com", "04167009501", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("964775880", "24245858"));
+		
+		Endereco e1 = new Endereco(null, "Rua Odemis", "37", "Apto 41 Bloco 19", "Jardim Umuarama", "05783180", cli1, c2);
+		Endereco e2 = new Endereco(null, "Avenida Margarida", "118", "casa do meio", "Cosme de Farias", "40253450", cli1, c4);
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
@@ -64,13 +84,16 @@ public class AppVendasApplication implements CommandLineRunner {
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
 		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 								
 		categoriaRepository.save(Arrays.asList(cat1, cat2));
 		produtoRepository.save(Arrays.asList(p1, p2, p3));
 		
-		estadoRepository.save(Arrays.asList(est1, est2));
-		cidadeRepository.save(Arrays.asList(c1,c2,c3));
+		estadoRepository.save(Arrays.asList(est1, est2, est3));
+		cidadeRepository.save(Arrays.asList(c1,c2,c3, c4));
 		
+		clienteRepository.save(Arrays.asList(cli1));
+		enderecoRepository.save(Arrays.asList(e1, e2));
 	}
 	
 	
