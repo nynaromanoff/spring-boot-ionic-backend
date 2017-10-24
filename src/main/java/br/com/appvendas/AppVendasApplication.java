@@ -14,6 +14,7 @@ import br.com.appvendas.domain.Cidade;
 import br.com.appvendas.domain.Cliente;
 import br.com.appvendas.domain.Endereco;
 import br.com.appvendas.domain.Estado;
+import br.com.appvendas.domain.ItemPedido;
 import br.com.appvendas.domain.Pagamento;
 import br.com.appvendas.domain.PagamentoComBoleto;
 import br.com.appvendas.domain.PagamentoComCartao;
@@ -26,6 +27,7 @@ import br.com.appvendas.repositories.CidadeRepository;
 import br.com.appvendas.repositories.ClienteRepository;
 import br.com.appvendas.repositories.EnderecoRepository;
 import br.com.appvendas.repositories.EstadoRepository;
+import br.com.appvendas.repositories.ItemPedidoRepository;
 import br.com.appvendas.repositories.PagamentoRepository;
 import br.com.appvendas.repositories.PedidoRepository;
 import br.com.appvendas.repositories.ProdutoRepository;
@@ -56,6 +58,9 @@ public class AppVendasApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AppVendasApplication.class, args);
@@ -99,6 +104,17 @@ public class AppVendasApplication implements CommandLineRunner {
 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("27/10/2017 23:59"),null);
 		ped2.setPagamento(pagto2);
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
@@ -124,6 +140,8 @@ public class AppVendasApplication implements CommandLineRunner {
 		
 		pedidoRepository.save(Arrays.asList(ped1, ped2));
 		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
+		
+		itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
 	}
 	
 	
