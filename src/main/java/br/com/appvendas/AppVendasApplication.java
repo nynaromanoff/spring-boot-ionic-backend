@@ -1,6 +1,7 @@
 package br.com.appvendas;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,20 @@ import br.com.appvendas.domain.Cidade;
 import br.com.appvendas.domain.Cliente;
 import br.com.appvendas.domain.Endereco;
 import br.com.appvendas.domain.Estado;
+import br.com.appvendas.domain.Pagamento;
+import br.com.appvendas.domain.PagamentoComBoleto;
+import br.com.appvendas.domain.PagamentoComCartao;
+import br.com.appvendas.domain.Pedido;
 import br.com.appvendas.domain.Produto;
+import br.com.appvendas.domain.enums.EstadoPagamento;
 import br.com.appvendas.domain.enums.TipoCliente;
 import br.com.appvendas.repositories.CategoriaRepository;
 import br.com.appvendas.repositories.CidadeRepository;
 import br.com.appvendas.repositories.ClienteRepository;
 import br.com.appvendas.repositories.EnderecoRepository;
 import br.com.appvendas.repositories.EstadoRepository;
+import br.com.appvendas.repositories.PagamentoRepository;
+import br.com.appvendas.repositories.PedidoRepository;
 import br.com.appvendas.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -42,6 +50,12 @@ public class AppVendasApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AppVendasApplication.class, args);
@@ -74,6 +88,19 @@ public class AppVendasApplication implements CommandLineRunner {
 		Endereco e1 = new Endereco(null, "Rua Odemis", "37", "Apto 41 Bloco 19", "Jardim Umuarama", "05783180", cli1, c2);
 		Endereco e2 = new Endereco(null, "Avenida Margarida", "118", "casa do meio", "Cosme de Farias", "40253450", cli1, c4);
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Pedido ped1 =  new Pedido(null, sdf.parse("24/10/2017 14:05"), cli1, e1);
+		Pedido ped2 =  new Pedido(null, sdf.parse("24/10/2017 14:15"), cli1, e1);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("27/10/2017 23:59"),null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
 		
@@ -94,6 +121,9 @@ public class AppVendasApplication implements CommandLineRunner {
 		
 		clienteRepository.save(Arrays.asList(cli1));
 		enderecoRepository.save(Arrays.asList(e1, e2));
+		
+		pedidoRepository.save(Arrays.asList(ped1, ped2));
+		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
 	}
 	
 	
