@@ -1,6 +1,10 @@
 package br.com.appvendas.resources;
 
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 //import java.net.URI;
 
 
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.appvendas.domain.Categoria;
+import br.com.appvendas.dto.CategoriaDTO;
 import br.com.appvendas.services.CategoriaService;
 
 @RestController
@@ -59,6 +64,14 @@ public class CategoriaResource {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List<Categoria> lista = service.findAll();
+		List<CategoriaDTO> listDTO = lista.stream()
+				.map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 
 }
