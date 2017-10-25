@@ -35,9 +35,9 @@ public class CategoriaResource {
 	
 	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Categoria> inser(@RequestBody Categoria obj){
-		Categoria categoriaSalva = service.insert(obj);
+		service.insert(obj);
 		
-		return new ResponseEntity<>(categoriaSalva, HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	
 	/*public ResponseEntity<Void> insert(@RequestBody Categoria obj){
 		obj = service.insert(obj);
@@ -50,6 +50,13 @@ public class CategoriaResource {
 	public ResponseEntity<Void> update(@RequestBody Categoria obj,@PathVariable Integer id){
 		obj.setId(id);
 		obj = service.update(obj);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		service.delete(id);
 		
 		return ResponseEntity.noContent().build();
 	}

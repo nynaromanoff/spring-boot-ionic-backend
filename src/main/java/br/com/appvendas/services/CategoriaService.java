@@ -1,10 +1,12 @@
 package br.com.appvendas.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.com.appvendas.domain.Categoria;
 import br.com.appvendas.repositories.CategoriaRepository;
+import br.com.appvendas.services.exceptions.DataIntegrityException;
 import br.com.appvendas.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,5 +37,16 @@ public class CategoriaService {
 		find(obj.getId());
 		return repo.save(obj);
 	}
+	
+	public void delete(Integer id){
+		find(id);
+		
+		try{
+			repo.delete(id);
+		}catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma categoria que contém produtos");
+		}
+	}
 }
+
 
