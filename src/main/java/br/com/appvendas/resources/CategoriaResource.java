@@ -4,6 +4,8 @@ package br.com.appvendas.resources;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 //import java.net.URI;
 
 
@@ -40,8 +42,9 @@ public class CategoriaResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Categoria> inser(@RequestBody Categoria obj){
-		service.insert(obj);
+	public ResponseEntity<Categoria> inser(@Valid @RequestBody CategoriaDTO objDto){
+		Categoria obj = service.fromDTO(objDto);
+		 service.insert(obj);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	
@@ -53,7 +56,8 @@ public class CategoriaResource {
 		*/
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj,@PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto,@PathVariable Integer id){
+		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		
