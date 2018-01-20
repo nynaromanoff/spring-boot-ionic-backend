@@ -9,9 +9,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.appvendas.domain.Cidade;
 import br.com.appvendas.domain.Cliente;
+import br.com.appvendas.domain.Endereco;
+import br.com.appvendas.domain.enums.TipoCliente;
 import br.com.appvendas.dto.ClienteDTO;
+import br.com.appvendas.dto.ClienteNewDTO;
+import br.com.appvendas.repositories.CidadeRepository;
 import br.com.appvendas.repositories.ClienteRepository;
+import br.com.appvendas.repositories.EnderecoRepository;
 import br.com.appvendas.services.exceptions.DataIntegrityException;
 import br.com.appvendas.services.exceptions.ObjectNotFoundException;
 
@@ -20,6 +26,12 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id){
 		
@@ -32,10 +44,17 @@ public class ClienteService {
 		
 	}
 	
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		obj = repo.save(obj);
+		enderecoRepository.save(obj.getEnderecos());
+		return obj;
+	}
+	
 	public Cliente update(Cliente obj) {
 		Cliente newObj = find(obj.getId());
 		updateData(newObj, obj);
-		return repo.save(newObj);
+		return obj;
 	}
 	
 	public void delete(Integer id){
@@ -47,7 +66,7 @@ public class ClienteService {
 			throw new DataIntegrityException("Não é possível excluir porque há entidades relacionadas.");
 		}
 	}
-	
+	 
 	public List<Cliente> findAll(){
 		return repo.findAll();
 	}
@@ -62,6 +81,23 @@ public class ClienteService {
 	 return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
 	}
 	
+	public Cliente fromDTO(ClienteNewDTO objDto){
+		
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+		Cidade cid =  cidadeRepository.findOne(objDto.getCidadeId());
+		Endereco end = new Endereco(null, objDto.getLongradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+		
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objDto.getTelefone1());
+		if(objDto.getTelefone2()!= null){
+			cli.getTelefones().add(objDto.getTelefone2());
+		}
+		if(objDto.getTelefone3()!= null){
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
+		
+		return cli;
+	}
 	
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());

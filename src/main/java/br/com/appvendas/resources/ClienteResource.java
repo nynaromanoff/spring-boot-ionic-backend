@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.appvendas.domain.Cliente;
 import br.com.appvendas.dto.ClienteDTO;
+import br.com.appvendas.dto.ClienteNewDTO;
 import br.com.appvendas.services.ClienteService;
 
 @RestController
@@ -32,6 +34,17 @@ public class ClienteResource {
 			Cliente obj = service.find(id);
 		
 		return ResponseEntity.ok().body(obj);}
+	
+	
+	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteNewDTO objDto){
+		Cliente obj = service.fromDTO(objDto);
+		service.insert(obj);
+		
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	
+	}
+	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto,@PathVariable Integer id){
