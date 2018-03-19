@@ -46,7 +46,7 @@ public class ClienteResource {
 	}
 	
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto,@PathVariable Integer id){
 		Cliente obj = service.fromDTO(objDto);
 		obj.setId(id);
@@ -62,7 +62,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll(){
 		List<Cliente> lista = service.findAll();
 		List<ClienteDTO> listDTO = lista.stream()
@@ -70,7 +70,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-	@RequestMapping(value="/page", method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 		 	@RequestParam(value="page", defaultValue="0") Integer page, 
 		 	@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
