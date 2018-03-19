@@ -2,8 +2,6 @@ package br.com.appvendas.resources.exception;
 
 public class FieldMessage {
 
-	private static final long serialVersionUID = 1L;
-	
 	private String fieldName;
 	private String message;
 	
