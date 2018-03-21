@@ -81,6 +81,15 @@ public class AppVendasApplication implements CommandLineRunner {
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
+		Produto p4 = new Produto(null, "Mesa de Escritório", 2000.00);
+		Produto p5 = new Produto(null, "Impressora", 800.00);
+		Produto p6 = new Produto(null, "Toalha", 80.00);
+		Produto p7 = new Produto(null, "Colcha", 2000.00);
+		Produto p8 = new Produto(null, "TV true color", 800.00);
+		Produto p9 = new Produto(null, "Roçadeira", 80.00);
+		Produto p10 = new Produto(null, "Abajour", 2000.00);
+		Produto p11 = new Produto(null, "Pendente", 800.00);
+		Produto p12 = new Produto(null, "Shampoo", 80.00);
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -124,7 +133,12 @@ public class AppVendasApplication implements CommandLineRunner {
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
-		cat2.getProdutos().addAll(Arrays.asList(p2));
+		cat2.getProdutos().addAll(Arrays.asList(p2, p4));
+		cat3.getProdutos().addAll(Arrays.asList(p5, p6));
+		cat4.getProdutos().addAll(Arrays.asList(p7));
+		cat5.getProdutos().addAll(Arrays.asList(p8));
+		cat6.getProdutos().addAll(Arrays.asList(p9, p10));
+		cat7.getProdutos().addAll(Arrays.asList(p11, p12));
 		
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
@@ -136,7 +150,7 @@ public class AppVendasApplication implements CommandLineRunner {
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 								
 		categoriaRepository.save(Arrays.asList(cat1, cat2,cat3, cat4, cat5, cat6, cat7));
-		produtoRepository.save(Arrays.asList(p1, p2, p3));
+		produtoRepository.save(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p11, p12));
 		
 		estadoRepository.save(Arrays.asList(est1, est2, est3));
 		cidadeRepository.save(Arrays.asList(c1,c2,c3, c4));
