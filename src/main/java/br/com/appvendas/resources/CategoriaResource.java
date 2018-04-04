@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import br.com.appvendas.domain.Categoria;
 import br.com.appvendas.dto.CategoriaDTO;
 import br.com.appvendas.services.CategoriaService;
 
+@Controller
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
@@ -41,6 +44,7 @@ public class CategoriaResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Categoria> inser(@Valid @RequestBody CategoriaDTO objDto){
 		Categoria obj = service.fromDTO(objDto);
@@ -55,6 +59,8 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 		*/
 	}
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto,@PathVariable Integer id){
 		Categoria obj = service.fromDTO(objDto);
@@ -63,7 +69,7 @@ public class CategoriaResource {
 		
 		return ResponseEntity.noContent().build();
 	}
-	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
