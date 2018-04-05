@@ -44,6 +44,7 @@ public class CategoriaResource {
 		
 	}
 	
+	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Categoria> inser(@Valid @RequestBody CategoriaDTO objDto){
@@ -69,6 +70,7 @@ public class CategoriaResource {
 		
 		return ResponseEntity.noContent().build();
 	}
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
@@ -76,6 +78,7 @@ public class CategoriaResource {
 		
 		return ResponseEntity.noContent().build();
 	}
+	
 	
 	@RequestMapping(method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CategoriaDTO>> findAll(){
@@ -85,6 +88,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
+	
 	@RequestMapping(value="/page", method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<CategoriaDTO>> findPage(
 		 	@RequestParam(value="page", defaultValue="0") Integer page, 

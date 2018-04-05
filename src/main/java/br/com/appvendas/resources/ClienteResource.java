@@ -30,6 +30,7 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 	
+	
 	@RequestMapping(value= "/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id){
 			Cliente obj = service.find(id);
@@ -72,7 +73,8 @@ public class ClienteResource {
 				.map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 		 	@RequestParam(value="page", defaultValue="0") Integer page, 

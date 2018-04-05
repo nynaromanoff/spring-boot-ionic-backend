@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.appvendas.domain.enums.Perfil;
 
+
+
 public class UserSS implements UserDetails  {
 	private static final long serialVersionUID = 1L;
 	
@@ -77,5 +79,9 @@ public class UserSS implements UserDetails  {
 		// O usuario esta  ativo/habilitado.
 		return true;
 	}
-
+	
+	public boolean hasRole(Perfil perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
+	
 }

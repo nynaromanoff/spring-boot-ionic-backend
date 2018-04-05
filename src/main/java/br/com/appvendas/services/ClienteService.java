@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
 import br.com.appvendas.domain.Cidade;
 import br.com.appvendas.domain.Cliente;
 import br.com.appvendas.domain.Endereco;
+import br.com.appvendas.domain.enums.Perfil;
 import br.com.appvendas.domain.enums.TipoCliente;
 import br.com.appvendas.dto.ClienteDTO;
 import br.com.appvendas.dto.ClienteNewDTO;
 import br.com.appvendas.repositories.CidadeRepository;
 import br.com.appvendas.repositories.ClienteRepository;
 import br.com.appvendas.repositories.EnderecoRepository;
+import br.com.appvendas.security.UserSS;
+import br.com.appvendas.services.exceptions.AuthorizationException;
 import br.com.appvendas.services.exceptions.DataIntegrityException;
 import br.com.appvendas.services.exceptions.ObjectNotFoundException;
 
@@ -38,6 +41,11 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id){
+		
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado!");
+		}
 		
 		Cliente obj = repo.findOne(id);
 		if(obj == null){
