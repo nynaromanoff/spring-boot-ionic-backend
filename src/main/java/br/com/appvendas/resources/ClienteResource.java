@@ -1,5 +1,6 @@
 package br.com.appvendas.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.appvendas.domain.Cliente;
 import br.com.appvendas.dto.ClienteDTO;
@@ -85,5 +87,12 @@ public class ClienteResource {
 		Page<Cliente> lista = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDTO = lista.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@RequestMapping(value="/picture", method=RequestMethod.POST)
+	public ResponseEntity<Cliente> uploadProfilePicture(@RequestParam(name="file") MultipartFile file){
+		URI uri = service.uploadProfilePicture(file);
+		return ResponseEntity.created(uri).build();
+	
 	}
 }
