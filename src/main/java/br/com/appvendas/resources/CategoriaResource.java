@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,7 @@ public class CategoriaResource {
 	
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Categoria> inser(@Valid @RequestBody CategoriaDTO objDto){
 		Categoria obj = service.fromDTO(objDto);
 		 service.insert(obj);
@@ -62,7 +61,7 @@ public class CategoriaResource {
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto,@PathVariable Integer id){
 		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
@@ -80,7 +79,7 @@ public class CategoriaResource {
 	}
 	
 	
-	@RequestMapping(method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll(){
 		List<Categoria> lista = service.findAll();
 		List<CategoriaDTO> listDTO = lista.stream()
@@ -89,7 +88,7 @@ public class CategoriaResource {
 	}
 
 	
-	@RequestMapping(value="/page", method=RequestMethod.GET, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>> findPage(
 		 	@RequestParam(value="page", defaultValue="0") Integer page, 
 		 	@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 

@@ -25,12 +25,13 @@ public class ClienteNewDTO implements Serializable{
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
+	@Length(min=5, max=8, message="O tamanho deve ser entre 5 e 8 caracteres.")
 	@NotEmpty(message= "Preenchimento Obrigatório!")
 	private String senha;
 
 	
 	@NotEmpty(message= "Preenchimento Obrigatório!")
-	private String longradouro;
+	private String logradouro;
 	
 	@NotEmpty(message= "Preenchimento Obrigatório!")
 	private String numero;
@@ -95,12 +96,12 @@ public class ClienteNewDTO implements Serializable{
 	}
 
 
-	public String getLongradouro() {
-		return longradouro;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setLongradouro(String longradouro) {
-		this.longradouro = longradouro;
+	public void setLogradouro(String longradouro) {
+		this.logradouro = longradouro;
 	}
 
 	public String getNumero() {
