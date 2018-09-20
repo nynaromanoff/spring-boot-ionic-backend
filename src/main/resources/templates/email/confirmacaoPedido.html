@@ -29,14 +29,14 @@
 				<th>Subtotal</th>
 			</tr>
 			<tr th:each="item : ${pedido.itens}">
-				<td th:text="${item.produto.nome}">nome</td>
-				<td th:text="${item.quantidade}">quantidade</td>
+				<td th:text="${item.produto.nome}">Nome</td>
+				<td th:text="${item.quantidade}">Quantidade</td>
 				<td
 					th:text="${#numbers.formatDecimal(item.preco, 0, 'POINT', 2,
-'COMMA')}">preco</td>
+'COMMA')}">Preco</td>
 				<td
 					th:text="${#numbers.formatDecimal(item.subTotal, 0, 'POINT', 2,
-'COMMA')}">subTotal</td>
+'COMMA')}">SubTotal</td>
 			</tr>
 		</table>
 		<p>
