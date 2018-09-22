@@ -50,7 +50,6 @@ public class S3Service {
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
-			
 			LOG.info("Iniciando Upload...");
 			s3cliente.putObject(bucketName, fileName, is, meta);
 			LOG.info("Upload finalizado.");
