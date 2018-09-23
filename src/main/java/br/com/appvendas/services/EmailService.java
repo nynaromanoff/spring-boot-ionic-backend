@@ -1,6 +1,8 @@
 package br.com.appvendas.services;
 
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
 import br.com.appvendas.domain.Cliente;
@@ -14,4 +16,8 @@ public interface EmailService {
 	void sendEmail(SimpleMailMessage msg);
 	
 	void sendNewPasswordEmail(Cliente cliente, String newPass);
+	
+	void sendOrderConfirmationHtmlEmail(Pedido obj);
+	
+	void sendHtmlEmail(MimeMessage msg);
 }
